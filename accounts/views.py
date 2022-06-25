@@ -1,9 +1,10 @@
 from django.contrib.auth import get_user_model, login
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import DetailView, CreateView
 
 from forms import MyUserCreationForm
+
 
 User = get_user_model()
 
@@ -12,6 +13,13 @@ class UserView(DetailView):
     model = get_user_model()
     template_name = "user_view.html"
     context_object_name = "user_object"
+
+    def get_context_data(self, **kwargs):
+        context = super(UserView, self).get_context_data()
+        advertisements = self.object.advertisements.filter(status='Publiced')
+        print(advertisements)
+        context['advertisements'] = advertisements
+        return context
 
 
 class RegisterView(CreateView):

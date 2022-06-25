@@ -6,4 +6,25 @@
     <h1>Логин: {{ user_object.username}}</h1>
     <h2>Имя и фамилия пользователя: {{ user_object.firs_name }} {{ user_object.last_name }}</h2>
     <h2>Email: {{ user_object.email }}</h2>
+        {% for advertisement in advertisements %}
+        <div class="card" style="width: 18rem;">
+             {% if advertisement.photo %}
+                    <img src="{{ advertisement.photo.url }}" alt="photo photo">
+            {% else %}
+                <img src='https://static.vecteezy.com/system/resources/thumbnails/004/141/669/small/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg' class="card-img-top" alt="...">
+            {% endif %}
+            <div class="card-body">
+                <p>Дата: {{ advertisement.created_at }}</p>
+                    {% if perms.webapp.change_advertisement or user == advertisement.author %}
+                        <a href="{% url 'webapp:advertisement_update' advertisement.pk %}" class="btn btn-primary">Изменить обьявление</a>
+                    {% endif %}
+                    {% if perms.webapp.delete_advertisement or user == advertisement.author %}
+                        <a href="{% url 'webapp:advertisement_delete' advertisement.pk %}" class="btn btn-primary">Удалить обьявление</a>
+                    {% endif %}
+                        <a href="{% url 'webapp:advertisement_view' advertisement.pk %}" class="btn btn-primary">Посмотреть обьявление</a>
+            </div>
+        </div>
+
+        -------------------------------------------
+        {% endfor %}
 {% endblock content %}

@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
@@ -37,7 +37,7 @@ class AdvertisementView(DetailView):
     template_name = 'advertisement/view.html'
 
 
-class AdvertisementCreateView(PermissionRequiredMixin,CreateView):
+class AdvertisementCreateView(LoginRequiredMixin,CreateView):
     model = Advertisement
     template_name = 'advertisement/create.html'
     form_class = AdvertisementForm
