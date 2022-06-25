@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form action="{% url 'webapp:advertisement_delete' advertisement.pk %}" method="POST">
+    {% csrf_token %}
+        <h2>Вы действительно хотите удалить обьявление?</h2>
+        <input type="submit" value="Да">
+    </form>
+    <form action="{% url "webapp:index" %}" target="_blank">
+        <button>Нет</button>
+    </form>
+{% endblock %}

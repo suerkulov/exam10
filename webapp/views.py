@@ -1,10 +1,10 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 
-from forms import AdvertisementForm
-from models import Advertisement
+from .forms import AdvertisementForm
+from .models import Advertisement
 
 
 class IndexView(ListView):
@@ -24,14 +24,36 @@ class AdvertisementView(DetailView):
     template_name = 'advertisement/view.html'
 
 
-class AdvertisementCreateView(LoginRequiredMixin,CreateView):
+class AdvertisementCreateView(PermissionRequiredMixin,CreateView):
     model = Advertisement
     template_name = 'advertisement/create.html'
     form_class = AdvertisementForm
     success_url = reverse_lazy('webapp:index')
+    permission_required = 'webapp.add_advertisement'
 
     def form_valid(self, form):
         advertisement = form.save(commit=False)
         advertisement.author = self.request.user
         advertisement.save()
         return redirect('webapp:index')
+
+
+class AdvertisementUpdateView(PermissionRequiredMixin, UpdateView):
+    model = Advertisement
+    form_class = AdvertisementForm
+    template_name = 'advertisement/update.html'
+    success_url = reverse_lazy('webapp:index')
+    permission_required = 'webapp.change_advertisement'
+
+    def has_permission(self):
+        return super().has_permission() or self.request.user == self.object.author
+
+
+class AdvertisementDeleteView(PermissionRequiredMixin, DeleteView):
+    model = Advertisement
+    template_name = 'advertisement/delete.html'
+    success_url = reverse_lazy('webapp:index')
+    permission_required = 'webapp.delete_advertisement'
+
+    def has_permission(self):
+        return super().has_permission() or self.request.user == self.object.author

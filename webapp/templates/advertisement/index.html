@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block nav %}
+    {% if perms.webapp.add_advertisement %}
+         <li class="nav-item">
+             <a class="nav-link" href="{% url 'webapp:advertisement_create' %}">Добавить обьявление</a>
+         </li>
+    {% endif %}
+{% endblock %}
+{% block content%}
+    {% for advertisement in advertisements %}
+        <div class="card" style="width: 18rem;">
+             {% if advertisement.photo %}
+                    <img src="{{ advertisement.photo.url }}" alt="photo photo">
+            {% else %}
+                <img src='https://static.vecteezy.com/system/resources/thumbnails/004/141/669/small/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg' class="card-img-top" alt="...">
+            {% endif %}
+            <div class="card-body">
+{#                <a href="{% url 'accounts:user_view' advertisement.author.pk  %}" class="card-text">Автор: {{ advertisement.author }}</a>#}
+                <p>Дата: {{ advertisement.created_at }}</p>
+                    {% if perms.webapp.change_advertisement or user == advertisement.author %}
+                        <a href="{% url 'webapp:advertisement_update' advertisement.pk %}" class="btn btn-primary">Изменить обьявление</a>
+                    {% endif %}
+                    {% if perms.webapp.delete_advertisement or user == advertisement.author %}
+                        <a href="{% url 'webapp:advertisement_delete' advertisement.pk %}" class="btn btn-primary">Удалить обьявление</a>
+                    {% endif %}
+                        <a href="{% url 'webapp:advertisement_view' advertisement.pk %}" class="btn btn-primary">Посмотреть обьявление</a>
+            </div>
+        </div>
+
+    {% endfor %}
+{% endblock content%}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Advertisement{{ advertisement.pk }}{% endblock %}
+          {% block nav %}
+            {% if perms.webapp.add_advertisement %}
+                 <li class="nav-item">
+                     <a class="nav-link" href="{% url 'webapp:advertisement_create' %}">Добавить обьявление</a>
+                 </li>
+            {% endif %}
+              {% if perms.webapp.change_advertisement or user == advertisement.author %}
+                  <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url "webapp:advertisement_update" advertisement.pk %}">Изменить обьявление</a>
+                  </li>
+              {% endif %}
+              {% if  perms.webapp.delete_advertisement or user == advertisement.author %}
+                  <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'webapp:advertisement_delete' advertisement.pk %}">Удалить обьявление</a>
+                  </li>
+              {% endif %}
+            {% endblock %}
+    {% block content %}
+        <div class="card" style="width: 18rem;">
+            <ul class="list-group list-group-flush">
+                {% if advertisement.photo %}
+                    <img src="{{ advertisement.photo.url }}" alt="photo photo">
+                {% else %}
+                    <img src='https://static.vecteezy.com/system/resources/thumbnails/004/141/669/small/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg' class="card-img-top" alt="...">
+                {% endif %}
+                <li class="list-group-item">Заголовок обьявления: {{ advetisement.caption }}</li>
+{#                <li class="list-group-item"><a href="{% url 'accounts:user_view' advertisement.author.pk  %}" class="card-text">Автор: {{ advertisement.author }}</a></li>#}
+                <li class="list-group-item">Дата: {{ advertisement.created_at }}</li>
+            </ul>
+        </div>
+
+    {% endblock content%}

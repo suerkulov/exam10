@@ -30,9 +30,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'accounts:logout' %}">Выход </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'accounts:user_view' user.id %}">Пользователь: {{ user.username }}</a>
-                </li>
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="{% url 'accounts:user_view' user.id %}">Пользователь: {{ user.username }}</a>#}
+{#                </li>#}
             {% endif %}
             </ul>
         </div>
