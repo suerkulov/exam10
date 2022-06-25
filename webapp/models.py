@@ -4,6 +4,7 @@ from django.db import models
 User = get_user_model()
 CHOICES = [('На Модерацию', 'На Модерацию'), ('Отклонено', 'Отклонено'),('Опубликована', 'Опубликована')]
 
+
 class Advertisement(models.Model):
     photo = models.ImageField(verbose_name="Фотография ", upload_to="photos/", null=False, blank=False)
     caption = models.CharField(max_length=50, null=False, blank=False, verbose_name='Заголовок')
@@ -28,3 +29,9 @@ class Advertisement(models.Model):
         db_table = 'advertisement'
         verbose_name = 'Обьявление'
         verbose_name_plural = "Обьявления"
+        permissions = [
+            (
+                'staff',
+                'делает все',
+            )
+        ]
