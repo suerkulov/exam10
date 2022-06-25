@@ -1,10 +1,9 @@
 from django.contrib.auth import get_user_model, login
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import DetailView, CreateView
 
-from forms import MyUserCreationForm
-
+from .forms import MyUserCreationForm
 
 User = get_user_model()
 
