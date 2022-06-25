@@ -1,9 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 
-from .forms import AdvertisementForm
+from .forms import AdvertisementForm, ModeratorForm
 from .models import Advertisement
 
 
@@ -14,7 +14,20 @@ class IndexView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(IndexView, self).get_context_data()
-        advertisements = Advertisement.objects.filter(is_public=True)
+        advertisements = Advertisement.objects.filter(status='Опубликована')
+        context['advertisements'] = advertisements
+        return context
+
+
+class ModerateIndexView(PermissionRequiredMixin,ListView):
+    model = Advertisement
+    template_name = "advertisement/moderate_index.html"
+    ordering = ['-created_at']
+    permission_required = 'webapp.staff'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ModerateIndexView, self).get_context_data()
+        advertisements = Advertisement.objects.filter(status='На Модерацию')
         context['advertisements'] = advertisements
         return context
 
@@ -36,6 +49,14 @@ class AdvertisementCreateView(PermissionRequiredMixin,CreateView):
         advertisement.author = self.request.user
         advertisement.save()
         return redirect('webapp:index')
+
+
+class ModerateUpdateView(PermissionRequiredMixin, UpdateView):
+    model = Advertisement
+    form_class = ModeratorForm
+    template_name = 'advertisement/update.html'
+    success_url = reverse_lazy('webapp:index')
+    permission_required = 'webapp.staff'
 
 
 class AdvertisementUpdateView(PermissionRequiredMixin, UpdateView):
