@@ -21,7 +21,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                {% block nav %}{% endblock %}
+                {% if perms.webapp.staff %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'webapp:moderator_advertisement_list' %}">Список обьявлений для модерации</a>
+                    </li>
+                {% endif %}
+                {% block nav %}
+                {% endblock %}
             {% if not user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'accounts:login' %}">Вход</a>

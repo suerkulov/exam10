@@ -1,6 +1,6 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import redirect
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 
 from .forms import AdvertisementForm, ModeratorForm
@@ -14,7 +14,7 @@ class IndexView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(IndexView, self).get_context_data()
-        advertisements = Advertisement.objects.filter(status='Опубликована')
+        advertisements = Advertisement.objects.filter(status='Publiced')
         context['advertisements'] = advertisements
         return context
 
@@ -27,7 +27,7 @@ class ModerateIndexView(PermissionRequiredMixin,ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ModerateIndexView, self).get_context_data()
-        advertisements = Advertisement.objects.filter(status='На Модерацию')
+        advertisements = Advertisement.objects.filter(status='InModiration')
         context['advertisements'] = advertisements
         return context
 

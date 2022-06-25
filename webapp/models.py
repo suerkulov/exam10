@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 
 User = get_user_model()
-CHOICES = [('На Модерацию', 'На Модерацию'), ('Отклонено', 'Отклонено'),('Опубликована', 'Опубликована')]
+CHOICES = [('InModiration', 'На Модерацию'), ('Rejected', 'Отклонено'),('Publiced', 'Опубликована')]
 
 
 class Advertisement(models.Model):
@@ -20,7 +20,7 @@ class Advertisement(models.Model):
         verbose_name="Автор",
         on_delete=models.CASCADE,
     )
-    status = models.CharField(max_length=100, verbose_name='Статус', choices=CHOICES, default=CHOICES[2])
+    status = models.CharField(max_length=100, verbose_name='Статус', choices=CHOICES, default=CHOICES[0][0])
 
     def __str__(self):
         return f"{self.pk}. {self.caption}: {self.text}"

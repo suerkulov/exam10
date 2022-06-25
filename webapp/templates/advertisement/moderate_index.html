@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block nav %}
+
 {% endblock %}
 {% block content%}
     {% for advertisement in advertisements %}
@@ -12,9 +13,10 @@
             <div class="card-body">
 {#                <a href="{% url 'accounts:user_view' advertisement.author.pk  %}" class="card-text">Автор: {{ advertisement.author }}</a>#}
                 <p>Дата: {{ advertisement.created_at }}</p>
-                        <a href="{% url 'webapp:advertisement_view' advertisement.pk %}" class="btn btn-primary">Посмотреть обьявление</a>
+                {% if perms.webapp.staff %}
+                    <a href="{% url 'webapp:moderator_advertisement' advertisement.pk %}" class="btn btn-primary">Посмотреть обьявление</a>
+                {% endif %}
             </div>
         </div>
-
     {% endfor %}
 {% endblock content%}
