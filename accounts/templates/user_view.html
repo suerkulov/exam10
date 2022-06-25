@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block nav %}
+{% endblock nav %}
+{% block content %}
+    <h1>Логин: {{ user_object.username}}</h1>
+    <h2>Имя и фамилия пользователя: {{ user_object.firs_name }} {{ user_object.last_name }}</h2>
+    <h2>Email: {{ user_object.email }}</h2>
+{% endblock content %}
